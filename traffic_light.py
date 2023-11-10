@@ -6,31 +6,35 @@
 import time
 import tkinter as tk
 
+cycle = 1
 color = "green", "yellow", "red"
-time_elapse = 6, 2, 4
+time_elapse = 4, 2, 3
 lights = tuple(zip(color, time_elapse))
 
 def loop(sequence, root, label):
     for color, duration in sequence:
-        update_label(label, color, duration)
-        root.update()
-        time.sleep(duration)
+        for remaining in range(duration, 0, -1):
+            update_label(label, color, remaining)
+            root.update()
+            time.sleep(1)
 
-def update_label(label, color, duration):
-    label.config(text = color, background = color, foreground = color)
-    label.master.title(f"Display letter: {color} for {duration} in seconds"
+def update_label(label, color, remaining):
+    label.config(text = f"{color} {remaining}", background = color, foreground = "black")
+    label.master.title("Traffic Light")
+
 
 def main():
     root = tk.Tk()
-    label = tk.Label(root, font=("Arial", 40)
+    label = tk.Label(root, font=("Arial", 40))
     label.pack(expand=True, fill="both")
     colors_and_durations = lights
     loop(colors_and_durations, root, label)
-    root.mainloop()
+    root.destroy()
 
 
-
-main()
+while cycle < 4:
+    main()
+    cycle += 1
 
 
 
